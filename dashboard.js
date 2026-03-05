@@ -39,7 +39,7 @@
 
   function formatDateShort(ts) {
     const d = new Date(ts);
-    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    return d.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "2-digit" });
   }
 
   function formatCurrency(amount) {
@@ -207,16 +207,12 @@
   function computeAudienceSummary(data, totals) {
     if (data.length === 0) {
       return {
-        currentFollowers: totals.followers,
-        currentSubscribers: totals.subscribers,
-        followerDelta: totals.followers - totals.followersPreviousMonth,
-        subscriberDelta: totals.subscribers - totals.subscribersPreviousMonth,
+        currentFollowers: 0,
+        currentSubscribers: 0,
+        followerDelta: 0,
+        subscriberDelta: 0,
         rangeFollowerGrowth: 0,
         rangeSubscriberGrowth: 0,
-        avgMonthlyFollowerNet: 0,
-        avgMonthlySubscriberNet: 0,
-        peakFollowerMonth: null,
-        peakSubscriberMonth: null,
       };
     }
 
@@ -226,29 +222,19 @@
     const rangeFollowerGrowth = last.followersTotal - first.followersTotal;
     const rangeSubscriberGrowth = last.subscribersTotal - first.subscribersTotal;
 
-    const totalFollowerNet = data.reduce((s, e) => s + e.followersNet, 0);
-    const totalSubscriberNet = data.reduce((s, e) => s + e.subscribersNet, 0);
-
-    let peakFollowerMonth = data[0];
-    let peakSubscriberMonth = data[0];
-    for (const entry of data) {
-      if (entry.followersNet > peakFollowerMonth.followersNet) peakFollowerMonth = entry;
-      if (entry.subscribersNet > peakSubscriberMonth.subscribersNet) peakSubscriberMonth = entry;
-    }
+    // Use latest timeseries data point (matches graph) instead of totals
+    const prevFollowers = data.length >= 2 ? data[data.length - 2].followersTotal : first.followersTotal;
+    const prevSubscribers = data.length >= 2 ? data[data.length - 2].subscribersTotal : first.subscribersTotal;
 
     return {
-      currentFollowers: totals.followers,
-      currentSubscribers: totals.subscribers,
-      followerDelta: totals.followers - totals.followersPreviousMonth,
-      subscriberDelta: totals.subscribers - totals.subscribersPreviousMonth,
+      currentFollowers: last.followersTotal,
+      currentSubscribers: last.subscribersTotal,
+      followerDelta: last.followersTotal - prevFollowers,
+      subscriberDelta: last.subscribersTotal - prevSubscribers,
       rangeFollowerGrowth,
       rangeSubscriberGrowth,
       rangeFollowerGrowthPct: pctChange(last.followersTotal, first.followersTotal),
       rangeSubscriberGrowthPct: pctChange(last.subscribersTotal, first.subscribersTotal),
-      avgMonthlyFollowerNet: totalFollowerNet / data.length,
-      avgMonthlySubscriberNet: totalSubscriberNet / data.length,
-      peakFollowerMonth,
-      peakSubscriberMonth,
     };
   }
 
@@ -267,49 +253,31 @@
       <div class="mas-summary">
         <div class="mas-stat-card">
           <div class="mas-stat-label">Followers</div>
-          <div class="mas-stat-value">${formatNumber(summary.currentFollowers)}</div>
+          <div class="mas-stat-value">${summary.currentFollowers.toLocaleString()}</div>
           <div class="mas-stat-delta ${deltaClass(summary.followerDelta)}">
-            ${deltaPrefix(summary.followerDelta)}${formatNumber(summary.followerDelta)} vs last month
+            ${deltaPrefix(summary.followerDelta)}${summary.followerDelta.toLocaleString()} vs previous period
           </div>
         </div>
         <div class="mas-stat-card">
           <div class="mas-stat-label">Subscribers</div>
-          <div class="mas-stat-value">${formatNumber(summary.currentSubscribers)}</div>
+          <div class="mas-stat-value">${summary.currentSubscribers.toLocaleString()}</div>
           <div class="mas-stat-delta ${deltaClass(summary.subscriberDelta)}">
-            ${deltaPrefix(summary.subscriberDelta)}${formatNumber(summary.subscriberDelta)} vs last month
+            ${deltaPrefix(summary.subscriberDelta)}${summary.subscriberDelta.toLocaleString()} vs previous period
           </div>
         </div>
         <div class="mas-stat-card">
           <div class="mas-stat-label">Range Growth (Followers)</div>
-          <div class="mas-stat-value">${deltaPrefix(summary.rangeFollowerGrowth)}${formatNumber(summary.rangeFollowerGrowth)}</div>
+          <div class="mas-stat-value">${deltaPrefix(summary.rangeFollowerGrowth)}${summary.rangeFollowerGrowth.toLocaleString()}</div>
           <div class="mas-stat-delta ${deltaClass(summary.rangeFollowerGrowthPct)}">
             ${summary.rangeFollowerGrowthPct ? summary.rangeFollowerGrowthPct.toFixed(1) + "%" : "N/A"}
           </div>
         </div>
         <div class="mas-stat-card">
           <div class="mas-stat-label">Range Growth (Subscribers)</div>
-          <div class="mas-stat-value">${deltaPrefix(summary.rangeSubscriberGrowth)}${formatNumber(summary.rangeSubscriberGrowth)}</div>
+          <div class="mas-stat-value">${deltaPrefix(summary.rangeSubscriberGrowth)}${summary.rangeSubscriberGrowth.toLocaleString()}</div>
           <div class="mas-stat-delta ${deltaClass(summary.rangeSubscriberGrowthPct)}">
             ${summary.rangeSubscriberGrowthPct ? summary.rangeSubscriberGrowthPct.toFixed(1) + "%" : "N/A"}
           </div>
-        </div>
-        <div class="mas-stat-card">
-          <div class="mas-stat-label">Avg Monthly Net (Followers)</div>
-          <div class="mas-stat-value">${deltaPrefix(Math.round(summary.avgMonthlyFollowerNet))}${formatNumber(Math.round(summary.avgMonthlyFollowerNet))}</div>
-        </div>
-        <div class="mas-stat-card">
-          <div class="mas-stat-label">Avg Monthly Net (Subscribers)</div>
-          <div class="mas-stat-value">${deltaPrefix(Math.round(summary.avgMonthlySubscriberNet))}${formatNumber(Math.round(summary.avgMonthlySubscriberNet))}</div>
-        </div>
-        <div class="mas-stat-card">
-          <div class="mas-stat-label">Peak Follower Month</div>
-          <div class="mas-stat-value">${summary.peakFollowerMonth ? formatDate(summary.peakFollowerMonth.collectedAt) : "N/A"}</div>
-          <div class="mas-stat-sub">${summary.peakFollowerMonth ? "+" + formatNumber(summary.peakFollowerMonth.followersNet) + " net" : ""}</div>
-        </div>
-        <div class="mas-stat-card">
-          <div class="mas-stat-label">Peak Subscriber Month</div>
-          <div class="mas-stat-value">${summary.peakSubscriberMonth ? formatDate(summary.peakSubscriberMonth.collectedAt) : "N/A"}</div>
-          <div class="mas-stat-sub">${summary.peakSubscriberMonth ? "+" + formatNumber(summary.peakSubscriberMonth.subscribersNet) + " net" : ""}</div>
         </div>
       </div>
     `;
@@ -677,27 +645,31 @@
 
     const summary = computeAudienceSummary(data, totals);
 
-    const granularities = ["daily", "weekly", "monthly"];
-    const granularityButtons = granularities
-      .map(
-        (g) =>
-          `<button class="mas-date-range-btn ${audienceGranularity === g ? "mas-date-range-btn-active" : ""}" data-granularity="${g}">${g.charAt(0).toUpperCase() + g.slice(1)}</button>`
-      )
-      .join("");
-
     const hasViewsReads = !!(currentStatsData && currentStatsData.dailyTotals && currentStatsData.dailyTotals.length > 0);
+
+    // Granularity selector only shown when we have daily views/reads data
+    const granularityHtml = hasViewsReads ? (() => {
+      const granularities = ["daily", "weekly", "monthly"];
+      const buttons = granularities
+        .map(
+          (g) =>
+            `<button class="mas-date-range-btn ${audienceGranularity === g ? "mas-date-range-btn-active" : ""}" data-granularity="${g}">${g.charAt(0).toUpperCase() + g.slice(1)}</button>`
+        )
+        .join("");
+      return `<div class="mas-date-range-group" id="mas-audience-granularity">${buttons}</div>`;
+    })() : "";
 
     container.innerHTML = `
       ${renderAudienceSummaryCards(summary)}
-      <div class="mas-date-range-group" id="mas-audience-granularity">${granularityButtons}</div>
       ${hasViewsReads ? `
+      ${granularityHtml}
       <div class="mas-chart-section">
         <div class="mas-chart-title">Views & Reads</div>
         <div class="mas-chart-container"><canvas id="mas-chart-views-reads"></canvas></div>
       </div>
       ` : ""}
       <div class="mas-chart-section">
-        <div class="mas-chart-title">Followers & Subscribers</div>
+        <div class="mas-chart-title">Followers & Subscribers (Monthly)</div>
         <div class="mas-chart-container"><canvas id="mas-chart-followers-subscribers"></canvas></div>
       </div>
     `;
@@ -710,10 +682,11 @@
       ));
     }
 
+    // Followers/subscribers is always monthly — no aggregation needed
     activeCharts.push(chartFollowersAndSubscribers(
       document.getElementById("mas-chart-followers-subscribers"),
       data,
-      audienceGranularity
+      "monthly"
     ));
 
     const granularityGroup = document.getElementById("mas-audience-granularity");
