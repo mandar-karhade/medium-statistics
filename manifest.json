@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Medium Audience Stats",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Enhanced analytics dashboard for Medium audience and earnings data with custom date ranges, growth analysis, and detailed charts.",
   "permissions": ["activeTab", "storage"],
   "action": {
