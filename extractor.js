@@ -198,7 +198,7 @@
             id
             title
             firstPublishedAt
-            totalStats { views reads }
+            totalStats { views reads presentations }
             earnings { total { currencyCode nanos units } }
             firstBoostedAt
           }
@@ -283,6 +283,7 @@
           firstPublishedAt: node.firstPublishedAt,
           totalViews: stats.views || 0,
           totalReads: stats.reads || 0,
+          totalPresentations: stats.presentations || 0,
           totalClaps: 0,
           totalEarnings: earnings,
           isBoosted: node.firstBoostedAt !== null,

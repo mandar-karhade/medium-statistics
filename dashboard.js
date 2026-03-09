@@ -543,7 +543,7 @@
 
   // --- Sortable Article Table ---
 
-  let articleSortField = "totalEarnings";
+  let articleSortField = "firstPublishedAt";
   let articleSortAsc = false;
 
   function renderArticleTable(articles) {
@@ -577,6 +577,7 @@
       return `<tr>
         <td class="mas-table-num">${pubDate}</td>
         <td class="mas-table-title" title="${a.title.replace(/"/g, '&quot;')}">${title}</td>
+        <td class="mas-table-num">${formatNumber(a.totalPresentations || 0)}</td>
         <td class="mas-table-num">${formatNumber(a.totalViews)}</td>
         <td class="mas-table-num">${formatNumber(a.totalReads)}</td>
         <td class="mas-table-num">${readRatio}%</td>
@@ -595,6 +596,7 @@
               <tr>
                 <th data-sort="firstPublishedAt">Published${sortIndicator("firstPublishedAt")}</th>
                 <th data-sort="title">Title${sortIndicator("title")}</th>
+                <th data-sort="totalPresentations">Presented${sortIndicator("totalPresentations")}</th>
                 <th data-sort="totalViews">Views${sortIndicator("totalViews")}</th>
                 <th data-sort="totalReads">Reads${sortIndicator("totalReads")}</th>
                 <th data-sort="readRatio">Read %${sortIndicator("readRatio")}</th>
