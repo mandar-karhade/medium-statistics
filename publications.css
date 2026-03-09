@@ -1,0 +1,436 @@
+/* Medium Publication Discovery - Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f5f5f5;
+  color: #1a1a1a;
+  min-height: 100vh;
+}
+
+.mpd-app {
+  max-width: 1600px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+
+.mpd-header {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 20px 32px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.mpd-header-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.mpd-header-sub {
+  font-size: 13px;
+  color: #999;
+}
+
+/* Search Bar */
+
+.mpd-search-bar {
+  background: #fff;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.mpd-search-bar input[type="text"] {
+  flex: 1;
+  min-width: 300px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.mpd-search-bar input[type="text"]:focus {
+  border-color: #1a8917;
+}
+
+.mpd-search-options {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  color: #666;
+}
+
+.mpd-search-options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.mpd-search-options input[type="number"] {
+  width: 70px;
+  padding: 6px 8px;
+  font-size: 13px;
+  font-family: inherit;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.mpd-checkbox-label input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.mpd-search-bar button {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+#mpd-search-btn {
+  background: #1a8917;
+  color: #fff;
+}
+
+#mpd-search-btn:hover {
+  background: #168014;
+}
+
+#mpd-search-btn:active {
+  transform: scale(0.98);
+}
+
+#mpd-search-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+#mpd-stop-btn {
+  background: #d32f2f;
+  color: #fff;
+}
+
+#mpd-stop-btn:hover {
+  background: #b71c1c;
+}
+
+/* Status */
+
+.mpd-status {
+  padding: 0 32px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #666;
+}
+
+.mpd-status-error {
+  color: #d32f2f;
+  font-weight: 500;
+}
+
+.mpd-progress-bar {
+  width: 200px;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  margin-left: 12px;
+  overflow: hidden;
+}
+
+.mpd-progress-fill {
+  height: 100%;
+  background: #1a8917;
+  border-radius: 2px;
+  transition: width 0.2s;
+}
+
+/* Controls */
+
+.mpd-controls {
+  padding: 8px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.mpd-result-count {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+}
+
+.mpd-export-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.mpd-export-buttons button {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  background: #fff;
+  color: #333;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.mpd-export-buttons button:hover {
+  background: #f0f0f0;
+}
+
+/* Table */
+
+.mpd-table-wrapper {
+  flex: 1;
+  overflow: auto;
+  padding: 0 32px 32px;
+}
+
+.mpd-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 16px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.mpd-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.mpd-table thead th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #888;
+  padding: 10px 12px;
+  background: #fafafa;
+  border-bottom: 2px solid #e0e0e0;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.mpd-table thead th:hover {
+  color: #1a1a1a;
+  background: #f0f0f0;
+}
+
+.mpd-table thead th.mpd-sort-active {
+  color: #1a8917;
+}
+
+.mpd-table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.1s;
+}
+
+.mpd-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.mpd-table tbody tr.mpd-row-enriching {
+  opacity: 0.7;
+}
+
+.mpd-table td {
+  padding: 8px 12px;
+  color: #333;
+  vertical-align: top;
+}
+
+.mpd-table td a {
+  color: #1a1a1a;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.mpd-table td a:hover {
+  text-decoration: underline;
+}
+
+.mpd-col-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.mpd-col-name {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mpd-col-desc {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #666;
+  font-size: 12px;
+}
+
+.mpd-col-tags {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: #666;
+}
+
+.mpd-col-slug {
+  font-size: 12px;
+  color: #888;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mpd-col-domain {
+  font-size: 12px;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mpd-col-domain a {
+  color: #1967d2;
+  font-weight: 400;
+}
+
+.mpd-col-creator {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.mpd-col-twitter {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.mpd-col-twitter a {
+  color: #1967d2;
+  font-weight: 400;
+}
+
+.mpd-col-date {
+  font-size: 12px;
+  white-space: nowrap;
+  color: #666;
+}
+
+.mpd-col-idx {
+  text-align: right;
+  color: #ccc;
+  font-size: 11px;
+  width: 40px;
+}
+
+.mpd-col-pts {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.mpd-pts-yes {
+  color: #1a8917;
+  font-weight: 600;
+}
+
+/* Empty / Auth states */
+
+.mpd-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  font-size: 14px;
+  color: #888;
+}
+
+/* Scrollbar */
+
+.mpd-table-wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.mpd-table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mpd-table-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.mpd-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+@media (max-width: 1000px) {
+  .mpd-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mpd-search-bar {
+    padding: 12px 16px;
+  }
+
+  .mpd-search-bar input[type="text"] {
+    min-width: 200px;
+  }
+
+  .mpd-controls,
+  .mpd-table-wrapper,
+  .mpd-status {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

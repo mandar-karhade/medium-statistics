@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medium Publication Discovery</title>
+  <link rel="stylesheet" href="publications.css">
+</head>
+<body>
+  <div class="mpd-app">
+    <header class="mpd-header">
+      <h1 class="mpd-header-title">Medium Publication Discovery</h1>
+      <span class="mpd-header-sub">Search, analyze, and export publication data</span>
+    </header>
+
+    <div class="mpd-search-bar">
+      <input
+        type="text"
+        id="mpd-search-input"
+        placeholder="Search publications (e.g., generative ai, programming, data science)"
+        autocomplete="off"
+      >
+      <div class="mpd-search-options">
+        <label>
+          Max results
+          <input type="number" id="mpd-max-results" value="100" min="10" max="1000" step="10">
+        </label>
+        <label class="mpd-checkbox-label">
+          <input type="checkbox" id="mpd-auto-enrich" checked>
+          Fetch details
+        </label>
+      </div>
+      <button id="mpd-search-btn">Search</button>
+      <button id="mpd-stop-btn" style="display:none">Stop</button>
+    </div>
+
+    <div class="mpd-status" id="mpd-status"></div>
+
+    <div class="mpd-controls" id="mpd-controls" style="display:none">
+      <span class="mpd-result-count" id="mpd-result-count"></span>
+      <div class="mpd-export-buttons">
+        <button id="mpd-export-json">Export JSON</button>
+        <button id="mpd-export-csv">Export CSV</button>
+      </div>
+    </div>
+
+    <div class="mpd-table-wrapper" id="mpd-table-wrapper"></div>
+  </div>
+
+  <script src="publications.js"></script>
+</body>
+</html>
